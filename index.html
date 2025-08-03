@@ -14,6 +14,10 @@
     />
     <!-- SheetJS CDN untuk ekspor XLSX -->
     <script src="https://unpkg.com/xlsx/dist/xlsx.full.min.js"></script>
+    <!-- jsPDF CDN untuk ekspor PDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <!-- jsPDF AutoTable CDN untuk membuat tabel di PDF dengan mudah -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
     <style>
       /* Gaya kustom untuk latar belakang body */
       body {
@@ -438,26 +442,6 @@
       </div>
     </div>
 
-    <!-- Modal Rekap Bulanan Baru -->
-    <div id="monthly-recap-modal-overlay" class="modal-overlay">
-      <div class="modal-content max-w-lg w-full">
-        <h3 class="text-xl font-bold text-indigo-300 mb-4">Rekap Bulanan</h3>
-        <div
-          id="monthly-recap-list"
-          class="space-y-4 text-left max-h-80 overflow-y-auto pr-2 custom-scrollbar"
-        >
-          <!-- Konten rekap akan dimuat di sini -->
-          <p class="text-center text-gray-400 italic">Memuat data...</p>
-        </div>
-        <button
-          id="close-recap-btn"
-          class="mt-6 w-full bg-gray-600 hover:bg-gray-500 text-gray-200 font-bold py-2 rounded-lg shadow-md transition duration-200 ease-in-out"
-        >
-          Tutup
-        </button>
-      </div>
-    </div>
-
     <script>
       // Variabel state global
       let transactions = [];
@@ -494,12 +478,6 @@
         "cancel-delete-all-btn"
       );
 
-      const monthlyRecapModalOverlay = document.getElementById(
-        "monthly-recap-modal-overlay"
-      );
-      const monthlyRecapList = document.getElementById("monthly-recap-list");
-      const closeRecapBtn = document.getElementById("close-recap-btn");
-
       // Global variable to store the animation frame ID for pie chart
       let pieChartAnimationFrameId = null;
 
@@ -514,13 +492,13 @@
       // Fungsi untuk mengurai angka yang diformat kembali ke angka mentah
       function parseFormattedNumber(str) {
         if (typeof str !== "string") return 0;
-        return parseFloat(str.replace(/[^\d,-]/g, "").replace(",", ".")); // Handle comma as decimal separator if present
+        return parseFloat(str.replace(/[^\d]/g, "")); // Hanya hapus karakter non-digit
       }
 
       // Fungsi untuk memformat tanggal ke "DD MMMM YYYY" (mis. 28 Juli 2025)
       function formatDateToDisplay(dateString) {
         if (!dateString) return "";
-        const date = new Date(dateString);
+        const date = new Date(dateString + "T00:00:00"); // Add T00:00:00 to avoid timezone issues
         // Check if the date is valid
         if (isNaN(date.getTime())) {
           console.error("Invalid date string:", dateString);
@@ -654,7 +632,7 @@
         const date = dateHiddenInput.value; // YYYY-MM-DD
 
         if (!name || amount <= 0 || !date) {
-          alert("Harap isi semua bidang dengan benar."); // Use a custom modal for this in a real app
+          showCustomAlert("Harap isi semua bidang dengan benar.");
           return;
         }
 
@@ -701,30 +679,16 @@
         hideModal(deleteAllModalOverlay);
       }
 
-      // Fungsi untuk menghitung rekap bulanan
-      function calculateMonthlyRecap() {
-        const recaps = {};
-        transactions.forEach((transaction) => {
-          // Format tanggal menjadi YYYY-MM
-          const monthYear = transaction.date.substring(0, 7);
-          if (!recaps[monthYear]) {
-            recaps[monthYear] = {
-              month: monthYear,
-              income: 0,
-              expense: 0,
-            };
+      // Fungsi untuk mengelompokkan transaksi berdasarkan bulan
+      function groupTransactionsByMonth(transactionsToGroup) {
+        return transactionsToGroup.reduce((acc, transaction) => {
+          const monthKey = transaction.date.substring(0, 7); // e.g., '2025-07'
+          if (!acc[monthKey]) {
+            acc[monthKey] = [];
           }
-          if (transaction.type === "income") {
-            recaps[monthYear].income += transaction.amount;
-          } else {
-            recaps[monthYear].expense += transaction.amount;
-          }
-        });
-
-        // Ubah objek menjadi array dan urutkan dari bulan terbaru
-        return Object.values(recaps).sort((a, b) =>
-          b.month.localeCompare(a.month)
-        );
+          acc[monthKey].push(transaction);
+          return acc;
+        }, {});
       }
 
       // --- Fungsi Render untuk Setiap Layar ---
@@ -916,9 +880,9 @@
             if (income === 0 && expense === 0) {
               percentagesDiv.innerHTML = `<p class="text-gray-400 italic">Tidak ada data</p>`;
             } else if (income > 0 && expense === 0) {
-              percentagesDiv.innerHTML = `<p class="text-green-400">100% Pemasukan</p> atau 0%`;
+              percentagesDiv.innerHTML = `<p class="text-green-400">100% Pemasukan</p>`;
             } else if (income === 0 && expense > 0) {
-              percentagesDiv.innerHTML = `<p class="text-red-400">100% Pengeluaran</p> atau 0%`;
+              percentagesDiv.innerHTML = `<p class="text-red-400">100% Pengeluaran</p>`;
             } else {
               const incomePercentage = ((income / total) * 100).toFixed(1);
               const expensePercentage = ((expense / total) * 100).toFixed(1);
@@ -990,7 +954,7 @@
                             value="${
                               transactionToEdit
                                 ? formatDateToDisplay(transactionToEdit.date)
-                                : "" // Kosongkan nilai default
+                                : formatDateToDisplay(getTodayDateString()) // Set default display date
                             }" readonly />
                         <!-- Input tanggal tersembunyi untuk memicu pemilih asli -->
                         <input type="date" id="transaction-date-hidden"
@@ -1069,49 +1033,6 @@
               updateUI();
             });
         }
-      }
-
-      // Fungsi untuk merender modal rekap bulanan
-      function renderMonthlyRecapModal(recapData) {
-        monthlyRecapList.innerHTML = ""; // Clear previous content
-        if (recapData.length === 0) {
-          monthlyRecapList.innerHTML = `<p class="text-center text-gray-400 italic">Tidak ada data transaksi bulanan.</p>`;
-        } else {
-          recapData.forEach((recap) => {
-            const balance = recap.income - recap.expense;
-            const monthName = new Date(recap.month).toLocaleDateString(
-              "id-ID",
-              { month: "long", year: "numeric" }
-            );
-            const balanceClass =
-              balance >= 0 ? "text-green-400" : "text-red-400";
-            const recapItemHtml = `
-              <div class="recap-item bg-gray-800 p-4 rounded-lg shadow-md flex flex-col space-y-2 animate-fade-in-up">
-                <p class="text-lg font-bold text-indigo-300">${monthName}</p>
-                <div class="flex justify-between items-center text-sm">
-                  <span class="text-green-400">Pemasukan:</span>
-                  <span class="font-semibold">Rp${formatNumber(
-                    recap.income
-                  )}</span>
-                </div>
-                <div class="flex justify-between items-center text-sm">
-                  <span class="text-red-400">Pengeluaran:</span>
-                  <span class="font-semibold">Rp${formatNumber(
-                    recap.expense
-                  )}</span>
-                </div>
-                <div class="flex justify-between items-center text-base pt-2 border-t border-gray-600">
-                  <span class="font-bold">Sisa Saldo:</span>
-                  <span class="font-extrabold ${balanceClass}">Rp${formatNumber(
-              balance
-            )}</span>
-                </div>
-              </div>
-            `;
-            monthlyRecapList.innerHTML += recapItemHtml;
-          });
-        }
-        showModal(monthlyRecapModalOverlay);
       }
 
       function renderListScreen() {
@@ -1267,7 +1188,7 @@
                             }" class="delete-btn text-red-400 hover:text-red-300 p-1 rounded-full transition duration-150 ease-in-out">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                                     <path strokeLinecap="round" strokeLinejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                </svg>
+                            </svg>
                             </button>
                         </div>
                     </div>
@@ -1372,11 +1293,11 @@
                         </select>
                         <!-- Tombol Aksi -->
                         <div class="flex w-full sm:w-auto space-x-2 sm:space-x-4 mt-2 sm:mt-0">
-                          <button id="show-recap-btn" class="flex-1 py-1 px-3 bg-blue-600 hover:bg-blue-700 text-white text-sm rounded-md font-semibold transition duration-200 ease-in-out">
-                              Rekap Bulanan
+                          <button id="export-pdf-btn" class="flex-1 py-1 px-3 bg-red-600 hover:bg-red-700 text-white text-sm rounded-md font-semibold transition duration-200 ease-in-out">
+                              Ekspor PDF
                           </button>
                           <button id="export-excel-btn" class="flex-1 py-1 px-3 bg-green-600 hover:bg-green-700 text-white text-sm rounded-md font-semibold transition duration-200 ease-in-out">
-                              Ekspor Excel
+                              Ekspor XLSX
                           </button>
                         </div>
                     </div>
@@ -1407,14 +1328,6 @@
             updateUI();
           });
 
-        // Event listener untuk tombol "Rekap Bulanan"
-        document
-          .getElementById("show-recap-btn")
-          .addEventListener("click", () => {
-            const recapData = calculateMonthlyRecap();
-            renderMonthlyRecapModal(recapData);
-          });
-
         // Attach event listeners for edit and delete buttons
         document.querySelectorAll(".edit-btn").forEach((button) => {
           button.addEventListener("click", (e) => {
@@ -1437,6 +1350,11 @@
             showModal(deleteAllModalOverlay);
           });
 
+        // Event listener untuk tombol ekspor PDF
+        document
+          .getElementById("export-pdf-btn")
+          .addEventListener("click", exportToPdf);
+
         document
           .getElementById("export-excel-btn")
           .addEventListener("click", exportToExcel);
@@ -1444,7 +1362,7 @@
 
       function exportToExcel() {
         if (transactions.length === 0) {
-          alert("Tidak ada data untuk diekspor!");
+          showCustomAlert("Tidak ada data untuk diekspor!");
           return;
         }
 
@@ -1459,6 +1377,122 @@
         const wb = XLSX.utils.book_new();
         XLSX.utils.book_append_sheet(wb, ws, "Transaksi Keuangan");
         XLSX.writeFile(wb, "keuangan_bulananku.xlsx");
+      }
+
+      // Fungsi untuk ekspor ke PDF
+      function exportToPdf() {
+        if (transactions.length === 0) {
+          showCustomAlert("Tidak ada data untuk diekspor!");
+          return;
+        }
+
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+
+        // Judul
+        doc.setFontSize(22);
+        doc.text("Rekap Transaksi Keuangan", 14, 20);
+
+        // Sub-judul dan tanggal ekspor
+        doc.setFontSize(12);
+        doc.setTextColor(100);
+        doc.text(
+          `Diekspor pada: ${formatDateToDisplay(getTodayDateString())}`,
+          14,
+          28
+        );
+
+        let y = 40;
+        doc.setFontSize(16);
+        doc.setTextColor(0);
+
+        // Group transactions by month
+        const groupedByMonth = groupTransactionsByMonth(transactions);
+        const sortedMonthKeys = Object.keys(groupedByMonth).sort((a, b) =>
+          b.localeCompare(a)
+        );
+
+        sortedMonthKeys.forEach((monthKey) => {
+          const monthName = new Date(monthKey + "-01").toLocaleDateString(
+            "id-ID",
+            { month: "long", year: "numeric" }
+          );
+          const transactionsInMonth = groupedByMonth[monthKey].sort(
+            (a, b) => new Date(b.date) - new Date(a.date)
+          );
+
+          // Calculate monthly summary
+          let totalIncome = 0;
+          let totalExpense = 0;
+          transactionsInMonth.forEach((t) => {
+            if (t.type === "income") totalIncome += t.amount;
+            else totalExpense += t.amount;
+          });
+          const balance = totalIncome - totalExpense;
+
+          // Add monthly header
+          doc.text(`${monthName} - Saldo: Rp${formatNumber(balance)}`, 14, y);
+          y += 8;
+
+          const tableData = transactionsInMonth.map((t) => [
+            formatDateToDisplay(t.date),
+            t.name,
+            `Rp${formatNumber(t.amount)}`,
+            t.type === "expense" ? "Pengeluaran" : "Pemasukan",
+          ]);
+
+          doc.autoTable({
+            startY: y,
+            head: [["Tanggal", "Nama Transaksi", "Jumlah", "Tipe"]],
+            body: tableData,
+            theme: "striped",
+            styles: {
+              font: "helvetica",
+              fontSize: 10,
+              cellPadding: 3,
+              halign: "left",
+              valign: "middle",
+            },
+            headStyles: {
+              fillColor: [67, 56, 202], // Indigo-600
+              textColor: 255,
+              fontStyle: "bold",
+            },
+            alternateRowStyles: {
+              fillColor: [43, 49, 61], // Gray-800
+              textColor: [209, 213, 219], // Gray-300
+            },
+            bodyStyles: {
+              fillColor: [55, 65, 81], // Gray-700
+              textColor: [229, 231, 235], // Gray-200
+            },
+          });
+          y = doc.autoTable.previous.finalY + 10;
+        });
+
+        doc.save("rekap_keuangan_bulanan.pdf");
+      }
+
+      // Tampilkan custom alert modal (sebagai pengganti alert bawaan)
+      function showCustomAlert(message) {
+        const modalHtml = `
+              <div id="custom-alert-modal" class="modal-overlay show">
+                  <div class="modal-content">
+                      <h3 class="text-xl font-bold text-yellow-300 mb-4">Peringatan</h3>
+                      <p class="text-gray-200 mb-6">${message}</p>
+                      <button id="close-alert-btn" class="bg-gray-600 hover:bg-gray-500 text-gray-200 font-bold py-2 px-5 rounded-lg shadow-md transition duration-200 ease-in-out">Tutup</button>
+                  </div>
+              </div>
+          `;
+        document.body.insertAdjacentHTML("beforeend", modalHtml);
+        document
+          .getElementById("close-alert-btn")
+          .addEventListener("click", () => {
+            const modal = document.getElementById("custom-alert-modal");
+            if (modal) {
+              modal.remove();
+            }
+          });
       }
 
       // --- Fungsi Pengelolaan UI Global ---
@@ -1520,11 +1554,6 @@
       confirmDeleteAllBtn.addEventListener("click", deleteAllTransactions);
       cancelDeleteAllBtn.addEventListener("click", () => {
         hideModal(deleteAllModalOverlay);
-      });
-
-      // Event listener untuk tombol tutup modal rekap
-      closeRecapBtn.addEventListener("click", () => {
-        hideModal(monthlyRecapModalOverlay);
       });
 
       // Inisialisasi aplikasi
