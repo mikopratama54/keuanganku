@@ -25,7 +25,6 @@
         transition: background-color 0.3s ease-in-out; /* Transisi halus */
         font-family: "Poppins", sans-serif; /* Terapkan font Poppins secara global */
       }
-
       /* Gaya kustom untuk pie chart */
       .pie-chart-container {
         display: flex;
@@ -59,7 +58,6 @@
         height: 16px;
         border-radius: 4px;
       }
-
       /* Efek hover tombol yang ditingkatkan */
       .w-full.bg-indigo-600,
       .w-full.bg-gray-300,
@@ -85,14 +83,12 @@
         transform: translateY(-2px) scale(1.05); /* Sedikit mengangkat dan membesar */
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
       }
-
       /* Animasi masuk item daftar */
       .transaction-item {
         opacity: 0;
         transform: translateY(20px);
         animation: slideInFromBottom 0.5s forwards ease-out;
       }
-
       @keyframes slideInFromBottom {
         from {
           opacity: 0;
@@ -103,7 +99,6 @@
           transform: translateY(0);
         }
       }
-
       /* Sembunyikan ikon kalender default untuk input tanggal dan gayanya */
       input[type="date"]::-webkit-calendar-picker-indicator {
         opacity: 0;
@@ -123,7 +118,6 @@
         -webkit-appearance: none; /* Sembunyikan gaya default */
         appearance: none;
       }
-
       /* Gaya khusus modal */
       .modal-overlay {
         position: fixed;
@@ -145,12 +139,10 @@
         visibility: hidden;
         transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
       }
-
       .modal-overlay.show {
         opacity: 1;
         visibility: visible;
       }
-
       .modal-content {
         background-color: #374151; /* Abu-abu gelap untuk latar belakang modal */
         padding: 2rem;
@@ -163,12 +155,10 @@
         opacity: 0;
         transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
       }
-
       .modal-overlay.show .modal-content {
         transform: translateY(0);
         opacity: 1;
       }
-
       /* Animasi Kustom yang Lebih Elegan */
       @keyframes fadeInUp {
         from {
@@ -180,7 +170,6 @@
           transform: translateY(0);
         }
       }
-
       @keyframes fadeInScaleUp {
         from {
           opacity: 0;
@@ -191,7 +180,6 @@
           transform: scale(1) translateY(0);
         }
       }
-
       @keyframes fadeInSlideRight {
         from {
           opacity: 0;
@@ -202,7 +190,6 @@
           transform: translateX(0);
         }
       }
-
       @keyframes fadeInSlideLeft {
         from {
           opacity: 0;
@@ -213,7 +200,6 @@
           transform: translateX(0);
         }
       }
-
       @keyframes bounceIn {
         0% {
           transform: scale(0.3);
@@ -230,7 +216,6 @@
           transform: scale(1);
         }
       }
-
       @keyframes slideInUp {
         from {
           transform: translateY(100%);
@@ -241,38 +226,30 @@
           transform: translateY(0);
         }
       }
-
       /* Apply these to elements */
       .animate-fade-in-up {
         animation: fadeInUp 0.7s ease-out forwards;
       }
-
       .animate-fade-in-scale-up {
         animation: fadeInScaleUp 0.7s ease-out forwards;
       }
-
       .animate-fade-in-slide-right {
         animation: fadeInSlideRight 0.6s ease-out forwards;
       }
-
       .animate-fade-in-slide-left {
         animation: fadeInSlideLeft 0.6s ease-out forwards;
       }
-
       .animate-bounce-in {
         animation: bounceIn 0.8s ease-out forwards;
       }
-
       .animate-slide-in-up {
         animation: slideInUp 0.5s ease-out forwards;
       }
-
       /* Hover effect for logo */
       .logo-animated:hover {
         transform: scale(1.1);
         transition: transform 0.3s ease-in-out;
       }
-
       .recap-item:nth-child(even) {
         background-color: #374151; /* Warna latar belakang alternatif */
       }
@@ -310,17 +287,14 @@
             class="h-16 w-16 sm:h-20 sm:w-20 rounded-full object-cover shadow-lg animate-bounce-in logo-animated"
           />
         </div>
-
         <!-- Area konten (akan diperbarui secara dinamis oleh JavaScript) -->
         <div id="content-area"></div>
       </div>
-
       <!-- Footer dengan informasi hak cipta, dikembalikan ke posisi semula -->
       <footer class="mt-8 text-center text-gray-500 text-sm">
         <p>Copyright © 2025 by mikopratama</p>
       </footer>
     </div>
-
     <!-- Bilah Navigasi Bawah, posisi tetap dan responsif di seluruh lebar layar -->
     <div
       id="bottom-nav"
@@ -384,13 +358,12 @@
           <path
             strokeLinecap="round"
             strokeLinejoin="round"
-            d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"
+            d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 002-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"
           />
         </svg>
         <span class="text-xs mt-1">Riwayat</span>
       </button>
     </div>
-
     <!-- Modal Konfirmasi Hapus Kustom (untuk satu item) -->
     <div id="delete-modal-overlay" class="modal-overlay">
       <div class="modal-content">
@@ -414,7 +387,6 @@
         </div>
       </div>
     </div>
-
     <!-- Modal Konfirmasi Hapus Semua Riwayat -->
     <div id="delete-all-modal-overlay" class="modal-overlay">
       <div class="modal-content">
@@ -441,14 +413,13 @@
         </div>
       </div>
     </div>
-
     <script>
       // Variabel state global
       let transactions = [];
       let currentScreen = "home";
       let editingTransactionId = null;
       let isExpense = true; // true untuk pengeluaran, false untuk pemasukan
-      let viewMode = "monthly"; // 'monthly' atau 'weekly'
+      let viewMode = "monthly"; // 'daily', 'weekly' atau 'monthly'
       let transactionToDeleteId = null; // Untuk menyimpan ID transaksi yang akan dihapus
       let filterType = "all"; // 'all', 'expense', 'income'
       let sortOrder = "monthlyGrouped"; // Mengubah default sort menjadi 'monthlyGrouped'
@@ -467,7 +438,6 @@
       );
       const confirmDeleteBtn = document.getElementById("confirm-delete-btn");
       const cancelDeleteBtn = document.getElementById("cancel-delete-btn");
-
       const deleteAllModalOverlay = document.getElementById(
         "delete-all-modal-overlay"
       );
@@ -482,7 +452,6 @@
       let pieChartAnimationFrameId = null;
 
       // --- Fungsi Utilitas ---
-
       // Fungsi untuk memformat angka dengan pemisah ribuan (mis. 50000 -> 50.000)
       function formatNumber(num) {
         if (typeof num !== "number") return num; // Return as is if not a number
@@ -492,7 +461,7 @@
       // Fungsi untuk mengurai angka yang diformat kembali ke angka mentah
       function parseFormattedNumber(str) {
         if (typeof str !== "string") return 0;
-        return parseFloat(str.replace(/[^\d]/g, "")); // Hanya hapus karakter non-digit
+        return parseFloat(str.replace(/[^0-9]/g, "")); // Hanya hapus karakter non-digit
       }
 
       // Fungsi untuk memformat tanggal ke "DD MMMM YYYY" (mis. 28 Juli 2025)
@@ -565,7 +534,6 @@
       }
 
       // --- Fungsi Logika Inti ---
-
       // Hitung ringkasan dan data grafik berdasarkan mode tampilan saat ini
       function calculateSummaryAndChartData() {
         const now = new Date();
@@ -573,7 +541,12 @@
         let totalIncome = 0;
         let totalExpense = 0;
 
-        if (viewMode === "weekly") {
+        if (viewMode === "daily") {
+          const todayDate = getTodayDateString();
+          filtered = transactions.filter(
+            (transaction) => transaction.date === todayDate
+          );
+        } else if (viewMode === "weekly") {
           const startOfWeek = new Date(now);
           startOfWeek.setDate(now.getDate() - now.getDay()); // Sunday
           startOfWeek.setHours(0, 0, 0, 0);
@@ -592,7 +565,6 @@
           // Tampilan bulanan
           const currentMonth = now.getMonth();
           const currentYear = now.getFullYear();
-
           filtered = transactions.filter((transaction) => {
             const transactionDateObj = new Date(transaction.date);
             return (
@@ -611,6 +583,7 @@
         });
 
         const totalAmount = totalIncome - totalExpense; // Saldo bersih
+
         return {
           filteredTransactions: filtered,
           totalAmount: totalAmount,
@@ -691,22 +664,39 @@
         }, {});
       }
 
-      // --- Fungsi Render untuk Setiap Layar ---
+      // Fungsi untuk mengelompokkan transaksi berdasarkan hari
+      function groupTransactionsByDay(transactionsToGroup) {
+        return transactionsToGroup.reduce((acc, transaction) => {
+          const dayKey = transaction.date; // e.g., '2025-07-28'
+          if (!acc[dayKey]) {
+            acc[dayKey] = [];
+          }
+          acc[dayKey].push(transaction);
+          return acc;
+        }, {});
+      }
 
+      // --- Fungsi Render untuk Setiap Layar ---
       function renderHomeScreen() {
         const { totalAmount, totalIncome, totalExpense } =
           calculateSummaryAndChartData();
-
         contentArea.innerHTML = `
-                <div class="flex justify-center space-x-4 mb-6 animate-fade-in-up">
-                    <button id="view-weekly" class="py-3 px-6 rounded-full font-semibold transition duration-300 ease-in-out ${
+                <div class="flex flex-wrap justify-center gap-2 mb-6 animate-fade-in-up">
+                    <button id="view-daily" class="flex-1 min-w-[100px] py-3 px-2 sm:px-6 rounded-full font-semibold text-sm sm:text-base transition duration-300 ease-in-out ${
+                      viewMode === "daily"
+                        ? "bg-purple-600 text-white shadow-md"
+                        : "bg-gray-600 text-gray-200 hover:bg-gray-500"
+                    }">
+                        Harian
+                    </button>
+                    <button id="view-weekly" class="flex-1 min-w-[100px] py-3 px-2 sm:px-6 rounded-full font-semibold text-sm sm:text-base transition duration-300 ease-in-out ${
                       viewMode === "weekly"
                         ? "bg-purple-600 text-white shadow-md"
                         : "bg-gray-600 text-gray-200 hover:bg-gray-500"
                     }">
                         Mingguan
                     </button>
-                    <button id="view-monthly" class="py-3 px-6 rounded-full font-semibold transition duration-300 ease-in-out ${
+                    <button id="view-monthly" class="flex-1 min-w-[100px] py-3 px-2 sm:px-6 rounded-full font-semibold text-sm sm:text-base transition duration-300 ease-in-out ${
                       viewMode === "monthly"
                         ? "bg-purple-600 text-white shadow-md"
                         : "bg-gray-600 text-gray-200 hover:bg-gray-500"
@@ -714,11 +704,14 @@
                         Bulanan
                     </button>
                 </div>
-
                 <div class="bg-gray-700 p-6 rounded-xl shadow-inner space-y-6 animate-fade-in-up">
                     <h2 class="text-2xl font-bold text-purple-300 text-center">
                         Ringkasan ${
-                          viewMode === "weekly" ? "Mingguan" : "Bulanan"
+                          viewMode === "daily"
+                            ? "Harian"
+                            : viewMode === "weekly"
+                            ? "Mingguan"
+                            : "Bulanan"
                         }
                     </h2>
                     
@@ -745,7 +738,6 @@
                             )}</p>
                         </div>
                     </div>
-
                     <div class="h-80 sm:h-96 bg-gray-800 rounded-lg p-4 shadow-md flex flex-col items-center justify-center animate-fade-in-up">
                         <div class="pie-chart-container w-full h-full max-w-xs max-h-xs sm:max-w-sm sm:max-h-sm">
                             <canvas id="pie-chart"></canvas>
@@ -766,7 +758,10 @@
                     </div>
                 </div>
             `;
-
+        document.getElementById("view-daily").addEventListener("click", () => {
+          viewMode = "daily";
+          updateUI();
+        });
         document.getElementById("view-weekly").addEventListener("click", () => {
           viewMode = "weekly";
           updateUI();
@@ -777,7 +772,6 @@
             viewMode = "monthly";
             updateUI();
           });
-
         renderPieChart(totalIncome, totalExpense);
       }
 
@@ -788,8 +782,8 @@
 
         const ctx = canvas.getContext("2d");
         const total = income + expense;
-
         const dpi = window.devicePixelRatio || 1;
+
         // Get the computed style for width and height
         const style_height_px = parseFloat(
           getComputedStyle(canvas).getPropertyValue("height")
@@ -897,7 +891,6 @@
             pieChartAnimationFrameId = requestAnimationFrame(animatePie);
           }
         }
-
         pieChartAnimationFrameId = requestAnimationFrame(animatePie);
       }
 
@@ -905,7 +898,6 @@
         const transactionToEdit = editingTransactionId
           ? transactions.find((t) => t.id === editingTransactionId)
           : null;
-
         contentArea.innerHTML = `
                 <div class="bg-gray-700 p-6 rounded-lg shadow-inner space-y-4 animate-fade-in-up">
                     <!-- Judul layar tambah transaksi, sekarang di tengah -->
@@ -916,7 +908,6 @@
                             : "Tambah Transaksi Baru"
                         }
                     </h2>
-
                     <!-- Tombol Pengeluaran/Pemasukan yang responsif -->
                     <div class="flex justify-center space-x-4 mb-4 w-full animate-fade-in-up">
                         <button id="toggle-expense" class="flex-1 py-2 rounded-full font-semibold transition duration-300 ease-in-out ${
@@ -934,7 +925,6 @@
                             Pemasukan
                         </button>
                     </div>
-
                     <input type="text" id="transaction-name" placeholder="Nama Transaksi (mis. Kopi, Gaji)"
                         class="w-full p-3 border border-gray-600 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition duration-200 ease-in-out bg-gray-800 text-gray-200 animate-fade-in-up"
                         value="${
@@ -986,7 +976,6 @@
                     }
                 </div>
             `;
-
         // Attach event listeners after rendering
         document
           .getElementById("toggle-expense")
@@ -1004,7 +993,7 @@
         const transactionAmountInput =
           document.getElementById("transaction-amount");
         transactionAmountInput.addEventListener("input", function (e) {
-          const rawValue = this.value.replace(/[^\d]/g, ""); // Remove non-digits
+          const rawValue = this.value.replace(/[^0-9]/g, ""); // Remove non-digits
           this.value = formatNumber(parseInt(rawValue || 0));
         });
 
@@ -1114,7 +1103,7 @@
                             }" class="delete-btn text-red-400 hover:text-red-300 p-1 rounded-full transition duration-150 ease-in-out">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                                     <path strokeLinecap="round" strokeLinejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                </svg>
+                            </svg>
                             </button>
                         </div>
                     </div>
@@ -1206,6 +1195,77 @@
                 `;
             })
             .join("");
+        } else if (sortOrder === "dailyGrouped") {
+          const groupedByDay = displayedTransactions.reduce(
+            (acc, transaction) => {
+              const dayKey = transaction.date; // e.g., '2025-07-28'
+              if (!acc[dayKey]) {
+                acc[dayKey] = [];
+              }
+              acc[dayKey].push(transaction);
+              return acc;
+            },
+            {}
+          );
+
+          const sortedDayKeys = Object.keys(groupedByDay).sort((a, b) =>
+            b.localeCompare(a)
+          ); // Newest day first
+
+          listHtml = sortedDayKeys
+            .map((dayKey) => {
+              const headerText = formatDateToDisplay(dayKey);
+              const transactionsInDay = groupedByDay[dayKey].sort(
+                (a, b) => new Date(b.date) - new Date(a.date)
+              ); // Sort by time if needed, currently by date
+
+              const transactionItemsHtml = transactionsInDay
+                .map(
+                  (t, index) => `
+                    <div class="transaction-item bg-gray-800 p-4 rounded-lg shadow-md flex items-center justify-between animate-fade-in-slide-right" style="animation-delay: ${
+                      index * 0.05
+                    }s;">
+                        <div class="flex-grow">
+                            <p class="text-lg font-semibold ${
+                              t.type === "expense"
+                                ? "text-red-300"
+                                : "text-green-300"
+                            }">${t.name}</p>
+                            <p class="text-sm text-gray-400">Rp${formatNumber(
+                              t.amount
+                            )} - ${formatDateToDisplay(t.date)}</p>
+                        </div>
+                        <div class="flex space-x-2">
+                            <button data-id="${
+                              t.id
+                            }" class="edit-btn text-blue-400 hover:text-blue-300 p-1 rounded-full transition duration-150 ease-in-out">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                </svg>
+                            </button>
+                            <button data-id="${
+                              t.id
+                            }" class="delete-btn text-red-400 hover:text-red-300 p-1 rounded-full transition duration-150 ease-in-out">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                `
+                )
+                .join("");
+
+              return `
+                    <div class="daily-group">
+                        <h3 class="text-xl font-bold text-indigo-300 mt-4 mb-2">${headerText}</h3>
+                        <div class="space-y-3">
+                            ${transactionItemsHtml}
+                        </div>
+                    </div>
+                `;
+            })
+            .join("");
         } else {
           // Sorting untuk oldest, amount-desc, amount-asc (flat list)
           if (sortOrder === "oldest") {
@@ -1259,7 +1319,6 @@
         contentArea.innerHTML = `
                 <div class="bg-gray-700 p-6 rounded-xl shadow-inner space-y-6 animate-fade-in-up">
                     <h2 class="text-2xl font-bold text-indigo-300 text-center mb-4">Riwayat Transaksi</h2>
-
                     <!-- Filter, Opsi Urutkan, dan Tombol Rekap/Ekspor (Layout Responsif Baru) -->
                     <div class="flex flex-col sm:flex-row sm:flex-wrap justify-center gap-2 sm:gap-4 mb-6">
                         <!-- Dropdown Filter dan Sortir -->
@@ -1281,6 +1340,9 @@
                             <option value="weeklyGrouped" ${
                               sortOrder === "weeklyGrouped" ? "selected" : ""
                             }>Mingguan</option>
+                            <option value="dailyGrouped" ${
+                              sortOrder === "dailyGrouped" ? "selected" : ""
+                            }>Harian</option>
                             <option value="oldest" ${
                               sortOrder === "oldest" ? "selected" : ""
                             }>Terlama</option>
@@ -1301,11 +1363,9 @@
                           </button>
                         </div>
                     </div>
-
                     <div id="transactions-list" class="space-y-3 max-h-96 overflow-y-auto pr-2 custom-scrollbar">
                         ${listHtml}
                     </div>
-
                     <div class="flex justify-center mt-6">
                         <button id="delete-all-btn" class="py-2 px-5 bg-red-700 hover:bg-red-800 text-white rounded-lg font-semibold shadow-md transition duration-200 ease-in-out animate-fade-in-up">
                             Hapus Semua Riwayat
@@ -1313,7 +1373,6 @@
                     </div>
                 </div>
             `;
-
         // Attach event listeners for filter and sort
         document
           .getElementById("filter-type")
@@ -1354,7 +1413,6 @@
         document
           .getElementById("export-pdf-btn")
           .addEventListener("click", exportToPdf);
-
         document
           .getElementById("export-excel-btn")
           .addEventListener("click", exportToExcel);
@@ -1496,7 +1554,6 @@
       }
 
       // --- Fungsi Pengelolaan UI Global ---
-
       function updateUI() {
         // Hapus kelas 'active' dari semua tombol navigasi
         navButtons.forEach((button) => {
@@ -1521,7 +1578,6 @@
       }
 
       // --- Event Listeners Global ---
-
       navHome.addEventListener("click", () => {
         currentScreen = "home";
         updateUI();
@@ -1545,6 +1601,7 @@
           transactionToDeleteId = null; // Reset
         }
       });
+
       cancelDeleteBtn.addEventListener("click", () => {
         transactionToDeleteId = null; // Reset
         hideModal(deleteModalOverlay);
