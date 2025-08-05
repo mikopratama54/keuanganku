@@ -1361,7 +1361,7 @@
                               Ekspor PDF
                           </button>
                           <button id="export-excel-btn" class="flex-1 py-1 px-3 bg-green-600 hover:bg-green-700 text-white text-sm rounded-md font-semibold transition duration-200 ease-in-out">
-                              Ekspor XLSX
+                              Ekspor Excel
                           </button>
                         </div>
                     </div>
@@ -1505,7 +1505,7 @@
             startY: y,
             head: [["Tanggal", "Nama Transaksi", "Jumlah", "Tipe"]],
             body: tableData,
-            theme: "striped",
+            theme: "plain", // Mengubah tema menjadi 'plain'
             styles: {
               font: "helvetica",
               fontSize: 10,
@@ -1518,14 +1518,7 @@
               textColor: 255,
               fontStyle: "bold",
             },
-            alternateRowStyles: {
-              fillColor: [43, 49, 61], // Gray-800
-              textColor: [209, 213, 219], // Gray-300
-            },
-            bodyStyles: {
-              fillColor: [55, 65, 81], // Gray-700
-              textColor: [229, 231, 235], // Gray-200
-            },
+            // Menghapus alternateRowStyles dan bodyStyles untuk menghilangkan background
           });
           y = doc.autoTable.previous.finalY + 10;
         });
